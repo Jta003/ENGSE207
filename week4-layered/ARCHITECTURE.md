@@ -3,50 +3,51 @@
 ## High-Level Architecture
 
 
-┌─────────────────────────────────────────────────────────┐
-│                     CLIENT (Browser)                    │
-│                    (HTML/CSS/JavaScript)                │
-└─────────────────────────────────────────────────────────┘
-│
-│ HTTP Requests
-▼
-┌─────────────────────────────────────────────────────────┐
-│              PRESENTATION LAYER (Controllers)           │
-│                                                         │
-│  ┌──────────────┐    ┌─────────────────────────┐        │
-│  │Task          │    │  - Input Validation     │        │
-│  │Controller    │───▶│  - Response Formatting  │        │
-│  └──────────────┘    │  - HTTP Error Handling  │        │
-│                      └─────────────────────────┘        │
-└─────────────────────────────────────────────────────────┘
-│
-▼
-┌─────────────────────────────────────────────────────────┐
-│            BUSINESS LOGIC LAYER (Services)              │
-│                                                         │
-│  ┌──────────────┐    ┌─────────────────────────┐        │
-│  │Task          │    │  - Business Rules       │        │
-│  │Service       │───▶│  - Validation Logic     │        │
-│  └──────────────┘    │  - Orchestration        │        │
-│                      └─────────────────────────┘        │
-└─────────────────────────────────────────────────────────┘
-│
-▼
-┌─────────────────────────────────────────────────────────┐
-│           DATA ACCESS LAYER (Repositories)              │
-│                                                         │
-│  ┌──────────────┐    ┌─────────────────────────┐        │
-│  │Task          │    │  - CRUD Operations      │        │
-│  │Repository    │───▶│  - Query Execution      │        │
-│  └──────────────┘    │  - Data Mapping         │        │
-│                      └─────────────────────────┘        │
-└─────────────────────────────────────────────────────────┘
-│
-▼
-┌──────────────┐
-│   DATABASE   │
-│   (SQLite)   │
-└──────────────┘
+```
++---------------------------+
+| CLIENT (Browser)          |
+| (HTML/CSS/JavaScript)    |
++---------------------------+
+           |
+           | HTTP Requests
+           v
++---------------------------+
+| PRESENTATION LAYER        |
+| (Controllers)             |
+|                           |
+| Task Controller --------> |
+|    | - Input Validation    |
+|    | - Response Formatting |
+|    | - HTTP Error Handling |
++---------------------------+
+           |
+           v
++---------------------------+
+| BUSINESS LOGIC LAYER      |
+| (Services)                |
+|                           |
+| Task Service -------->    |
+|    | - Business Rules      |
+|    | - Validation Logic    |
+|    | - Orchestration       |
++---------------------------+
+           |
+           v
++---------------------------+
+| DATA ACCESS LAYER         |
+| (Repositories)            |
+|                           |
+| Task Repository --------> |
+|    | - CRUD Operations     |
+|    | - Query Execution     |
+|    | - Data Mapping        |
++---------------------------+
+           |
+           v
++---------------------------+
+| DATABASE (SQLite)         |
++---------------------------+
+```
 
 
 ## Data Flow Example: Create Task
