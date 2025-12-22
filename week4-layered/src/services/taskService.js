@@ -67,11 +67,6 @@ class TaskService {
             }
         }
 
-        // กฎทางธุรกิจ: ไม่สามารถเปลี่ยนจาก DONE กลับไปเป็น TODO
-        if (existingTask.status === 'DONE' && updates.status === 'TODO') {
-            throw new Error('ไม่สามารถเปลี่ยนงานที่เสร็จแล้วกลับไปเป็น TODO ได้');
-        }
-
         // กฎทางธุรกิจ: HIGH priority ต้องมี description
         if (updates.priority === 'HIGH' && !existingTask.description && !updates.description) {
             throw new Error('งานลำดับความสำคัญสูงต้องมีรายละเอียด');

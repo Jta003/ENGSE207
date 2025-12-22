@@ -97,46 +97,58 @@ class TaskController {
      * อัพเดท task
      */
     async updateTask(req, res, next) {
-        try {
-            const id = parseInt(req.params.id);
-            
-            if (isNaN(id)) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'ID ไม่ถูกต้อง'
-                });
-            }
+    try {
+        const id = parseInt(req.params.id);
 
-            const updates = {};
-            if (req.body.title !== undefined) updates.title = req.body.title;
-            if (req.body.description !== undefined) updates.description = req.body.description;
-            if (req.body.status !== undefined) updates.status = req.body.status;
-            if (req.body.priority !== undefined) updates.priority = req.body.priority;
-
-            const task = await taskService.updateTask(id, updates);
-            
-            res.json({
-                success: true,
-                data: task,
-                message: 'อัพเดทงานสำเร็จ'
+        if (isNaN(id)) {
+            return res.status(400).json({
+                success: false,
+                error: 'ID ไม่ถูกต้อง'
             });
-        } catch (error) {
-            if (error.message.includes('ไม่พบ')) {
-                return res.status(404).json({
-                    success: false,
-                    error: error.message
-                });
-            }
-            if (error.message.includes('ข้อมูลไม่ถูกต้อง') || 
-                error.message.includes('ไม่สามารถ')) {
-                return res.status(400).json({
-                    success: false,
-                    error: error.message
-                });
-            }
-            next(error);
         }
+
+        const updates = {};
+        if (req.body.title !== undefined) updates.title = req.body.title;
+        if (req.body.description !== undefined) updates.description = req.body.description;
+        if (req.body.status !== undefined) updates.status = req.body.status.toUpperCase();
+        if (req.body.priority !== undefined) updates.priority = req.body.priority;
+
+        // ⭐ เพิ่มตรงนี้
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'ไม่มีข้อมูลสำหรับอัพเดท'
+            });
+        }
+
+        console.log('UPDATE TASK:', updates);
+
+        const task = await taskService.updateTask(id, updates);
+
+        res.json({
+            success: true,
+            data: task,
+            message: 'อัพเดทงานสำเร็จ'
+        });
+    } catch (error) {
+        if (error.message.includes('ไม่พบ')) {
+            return res.status(404).json({
+                success: false,
+                error: error.message
+            });
+        }
+        if (
+            error.message.includes('ข้อมูลไม่ถูกต้อง') ||
+            error.message.includes('ไม่สามารถ')
+        ) {
+            return res.status(400).json({
+                success: false,
+                error: error.message
+            });
+        }
+        next(error);
     }
+}
 
     /**
      * DELETE /api/tasks/:id

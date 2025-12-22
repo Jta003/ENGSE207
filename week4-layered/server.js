@@ -57,5 +57,12 @@ process.on('SIGINT', async () => {
     await database.close();
     process.exit(0);
 });
+const HOST = process.env.HOST || '0.0.0.0';
+
+// แก้ไข listen call:
+app.listen(PORT, HOST, () => {
+    logger.info(`🚀 เซิร์ฟเวอร์ทำงานที่ http://${HOST}:${PORT}`);
+    logger.info(`📊 Environment: ${process.env.NODE_ENV}`);
+});
 
 startServer();
