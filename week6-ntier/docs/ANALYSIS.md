@@ -540,7 +540,7 @@ Trigger/เงื่อนไข:
     ┌────┴──────┐                      │
     │ Yes       │ No                   │
     ▼           ▼                      │
- [N-Tier]   [Client-Server]           │
+ [N-Tier]   [Client-Server]            │
     │           │                      │
     └───────┬───┴──────────────────────┘
             │
