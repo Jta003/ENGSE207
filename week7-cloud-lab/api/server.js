@@ -2,19 +2,19 @@
 const express = require('express');
 const cors = require('cors');
 
-const app = express(); // ⭐ สำคัญมาก ต้องมาก่อน app.use ⭐
+const app = express(); // ⭐ ต้องอยู่ก่อน app.use ⭐
 
 // middleware
 app.use(express.json());
 
-// CORS configuration - รองรับทั้ง Local และ Railway
+// CORS configuration
 const corsOptions = {
     origin: function (origin, callback) {
         const allowedOrigins = [
             'http://localhost:3000',
             'http://localhost:8080',
             'https://localhost',
-            /\.railway\.app$/   // อนุญาตทุก subdomain ของ railway.app
+            /\.railway\.app$/
         ];
 
         if (!origin) return callback(null, true);
@@ -24,24 +24,43 @@ const corsOptions = {
             return allowed === origin;
         });
 
-        if (isAllowed) {
-            callback(null, true);
-        } else {
-            console.log('CORS blocked:', origin);
-            callback(null, true); // Lab อนุโลม
-        }
+        callback(null, true); // lab อนุโลมทั้งหมด
     },
     credentials: true
 };
 
 app.use(cors(corsOptions));
 
-// test route
+/* =========================
+   API ROUTES (สำคัญมาก)
+   ========================= */
+
+// Health Check (อาจารย์ใช้)
+app.get('/api/health', (req, res) => {
+    res.json({
+        success: true,
+        data: {
+            status: 'healthy',
+            database: 'railway',
+            timestamp: new Date().toISOString()
+        }
+    });
+});
+
+// Get Tasks (mock ตาม lab)
+app.get('/api/tasks', (req, res) => {
+    res.json({
+        success: true,
+        data: []
+    });
+});
+
+// root (ไว้เช็คว่า server รัน)
 app.get('/', (req, res) => {
     res.send('API is running');
 });
 
-// Railway ต้องใช้ PORT แบบนี้
+// Railway PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('Server running on port', PORT);
