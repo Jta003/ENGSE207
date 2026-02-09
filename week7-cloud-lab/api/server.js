@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
+const pool = require('./src/config/database');
 
 const app = express(); // ⭐ ต้องอยู่ก่อน app.use ⭐
 
@@ -47,12 +48,22 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Get Tasks (mock ตาม lab)
-app.get('/api/tasks', (req, res) => {
-    res.json({
-        success: true,
-        data: []
-    });
+app.get('/api/tasks', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM tasks ORDER BY id ASC'
+        );
+
+        res.json({
+            success: true,
+            data: result.rows
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+    }
 });
 
 // root (ไว้เช็คว่า server รัน)
