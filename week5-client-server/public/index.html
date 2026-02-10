@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Board - Client Server Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ========================================
+         HEADER + SERVER STATUS
+         ======================================== -->
+    <header class="app-header">
+        <h1>📋 Task Board</h1>
+        <p class="subtitle">Client–Server Architecture Demo</p>
+
+        <!-- Server Status -->
+        <div id="serverStatus" class="status-bar">
+            <span id="statusIndicator">🔴</span>
+            <span id="statusText">Connecting to server...</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ========================================
+             ADD TASK FORM
+             ======================================== -->
+        <section class="add-task-section">
+            <h2>➕ Add New Task</h2>
+
+            <form id="addTaskForm">
+                <div class="form-group">
+                    <label for="taskTitle">Task Title *</label>
+                    <input 
+                        type="text"
+                        id="taskTitle"
+                        placeholder="Enter task title"
+                        required
+                        maxlength="200"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Description</label>
+                    <textarea
+                        id="taskDescription"
+                        placeholder="Enter task description"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskPriority">Priority</label>
+                    <select id="taskPriority">
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM" selected>Medium</option>
+                        <option value="HIGH">High</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Add Task
+                </button>
+            </form>
+        </section>
+
+        <!-- ========================================
+             TASK BOARD
+             ======================================== -->
+        <section class="tasks-section">
+            <h2>📊 All Tasks</h2>
+
+            <!-- Filter -->
+            <div class="filter-section">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter">
+                    <option value="ALL">All Tasks</option>
+                    <option value="TODO">To Do</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="DONE">Done</option>
+                </select>
+            </div>
+
+            <!-- Kanban Columns -->
+            <div class="task-columns">
+
+                <div class="task-column">
+                    <h3 class="column-header todo-header">
+                        📝 To Do (<span id="todoCount">0</span>)
+                    </h3>
+                    <div id="todoTasks" class="task-list"></div>
+                </div>
+
+                <div class="task-column">
+                    <h3 class="column-header progress-header">
+                        🔄 In Progress (<span id="progressCount">0</span>)
+                    </h3>
+                    <div id="progressTasks" class="task-list"></div>
+                </div>
+
+                <div class="task-column">
+                    <h3 class="column-header done-header">
+                        ✅ Done (<span id="doneCount">0</span>)
+                    </h3>
+                    <div id="doneTasks" class="task-list"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================
+             FOOTER
+             ======================================== -->
+        <footer>
+            <p>ENGSE207 Software Architecture</p>
+            <p>Architecture Type: <strong>Client–Server</strong></p>
+        </footer>
+
+    </div>
+
+    <!-- ========================================
+         LOADING OVERLAY
+         ======================================== -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- ========================================
+         JAVASCRIPT
+         ======================================== -->
+    <script src="config.js" defer></script>
+    <script src="app.js" defer></script>
+
+</body>
+</html>
